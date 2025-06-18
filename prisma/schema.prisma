@@ -6,22 +6,53 @@
 
 generator client {
   provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
-  // url      = env("DATABASE_URL")
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-  id         String @id @unique
-  name       String
-  email      String
-  password   String
-  profileUrl String
+  id        String   @id @unique @default(uuid())
+  name      String   @unique
+  username  String   @unique
+  email     String   @unique
+  password  String
+  type      String   @default("normal")
+  createdAt DateTime @default(now())
+  isBanned  Boolean  @default(false)
 
-  type     String   @default("normal")
-  date     DateTime @default(now())
-  isBanned Boolean  @default(false)
+  Novel Novel[]
+}
+
+model Novel {
+  id          String   @id @unique @default(uuid())
+  userId      String
+  title       String   @unique
+  coverUrl    String
+  author      String   @default("Unknown")
+  translator  String   @default("Unknown")
+  mc          String   @default("Unknown")
+  isCompleted Boolean  @default(false)
+  isAdult     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  NovelContent NovelContent[]
+}
+
+model NovelContent {
+  id        String   @id @unique @default(uuid())
+  userId    String
+  novelId   String
+  title     String
+  desc      String
+  content   String
+  coverUrl  String
+  createdAt DateTime @default(now())
+
+  novel Novel @relation(fields: [novelId], references: [id], onDelete: Cascade)
 }

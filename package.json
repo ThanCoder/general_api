@@ -2,16 +2,18 @@
   "name": "general_api",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch src/index.tsx",
     "build": "tsc",
     "start": "node api/index.js",
     "postinstall": "npx prisma migrate dev",
-    "generate": "npx prisma generate"
+    "p:gen": "npx prisma generate"
   },
   "dependencies": {
     "@hono/node-server": "^1.14.4",
     "@prisma/client": "^6.9.0",
-    "hono": "^4.7.11"
+    "dotenv": "^16.5.0",
+    "hono": "^4.7.11",
+    "jose": "^6.0.11"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
